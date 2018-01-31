@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Storage {
 
-    private final ArrayList<Pair> table;
+    private ArrayList<Pair> table;
     private int n;
 
     public Storage() {
@@ -19,16 +19,7 @@ public class Storage {
         this.n = n;
     }
 
-    @Override
-    public String toString() {
-        String str = "";
-        int n = 0;
-        for (Pair entry : table) {
-            str += "x" + n + "--" + entry.getX() + "\ny" + n + "--" + entry.getY() + "\n";
-            n++;
-        }
-        str += this.n;
-        return str;
+    public ArrayList<Pair> getTable() {
+        return table;
     }
-
 }
