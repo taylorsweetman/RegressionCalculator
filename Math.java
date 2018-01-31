@@ -2,7 +2,7 @@ package regressioncalculator;
 
 public class Math {
 
-   // private Storage data;
+    private Storage myData;
     private double xBar;
     private double yBar;
     private double xVar; //for each x in X: (x-xBar)^2
@@ -12,13 +12,19 @@ public class Math {
     private double beta0; //yBar - beta1 * xBar
     private int n;
 
-    public Math() {
-    //    this.data = 
+    public Math(Storage inputData) {
+        this.myData = inputData;
+        
         
     }
 
     public double xBar() {
-        return 0;
+        double avg = 0;
+        for (Pair group : myData.getTable()) {
+            avg += group.getX();
+        }
+        avg /= myData.getTable().size();
+        return avg;
     }
 
     public double yBar() {
@@ -45,5 +51,4 @@ public class Math {
         return 0;
     }
 
-    
 }
