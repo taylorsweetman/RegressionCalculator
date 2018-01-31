@@ -22,10 +22,12 @@ public class RegressionCalculator {
             if (input2.equals("a")) {
                 break;
             }
-            Pair XYpair = new Pair(input1, input2);
-            DB.add(XYpair);
+            Pair xyPair = new Pair(input1, input2);
+            DB.add(xyPair);
             n++;
         }
+        
+        DB.add(n);
         
         System.out.println(DB);
     }
