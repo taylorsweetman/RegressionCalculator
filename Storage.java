@@ -6,11 +6,11 @@ public class Storage {
 
     private ArrayList<Pair> table;
     private int n;
-    private Math myMath;
+    private MyMath myMath;
 
     public Storage() {
         table = new ArrayList<>();
-        myMath = new Math(this);
+        myMath = new MyMath(this);
     }
 
     public void add(Pair input) {
@@ -25,6 +25,10 @@ public class Storage {
         return table;
     }
 
+    public int getN() {
+        return n;
+    }
+    
     @Override
     public String toString() {
         String str = "";
@@ -33,7 +37,8 @@ public class Storage {
             str += "x" + n + "--" + entry.getX() + "\ny" + n + "--" + entry.getY() + "\n";
             n++;
         }
-        str += myMath.xBar();
+        str += "xBar: " + myMath.xBar() + " yBar: " + myMath.yBar() + " xVar: " + myMath.xVar() + " yVar: " + myMath.yVar() + " xyCov: " + myMath.xyCov() + "\n";
+        str += "y = " + myMath.beta0() + " + " + myMath.beta1() + " * x\n";
         return str;
     }
 }
