@@ -1,6 +1,6 @@
 package regressioncalculator;
 
-public class Math {
+public class MyMath {
 
     private Storage myData;
     private double xBar;
@@ -12,7 +12,7 @@ public class Math {
     private double beta0; //yBar - beta1 * xBar
     private int n;
 
-    public Math(Storage inputData) {
+    public MyMath(Storage inputData) {
         this.myData = inputData;
         
         
