@@ -41,11 +41,11 @@ public class MyMath {
     public double xVar() {
         double var = 0;
         for (Pair group : myData.getTable()) {
-            double diff = group.getX() - xBar();
-            var += diff * diff;
+            double diff = Math.pow(group.getX() - xBar(),2);
+            var += diff;
         }
 
-        var /= myData.getN();
+        var /= (myData.getN() - 1);
         xVar = var;
         return xVar;
     }
@@ -53,11 +53,11 @@ public class MyMath {
     public double yVar() {
         double var = 0;
         for (Pair group : myData.getTable()) {
-            double diff = group.getY() - yBar();
-            var += diff * diff;
+            double diff = Math.pow(group.getY() - yBar(),2);
+            var += diff;
         }
 
-        var /= myData.getN();
+        var /= (myData.getN()-1);
         yVar = var;
         return yVar;
     }
