@@ -3,16 +3,25 @@ package regressioncalculator;
 import java.util.Scanner;
 
 public class RegressionCalculator {
-    
 
     public static void main(String[] args) {
+        /*fixedInput(1, 1);
+        fixedInput(2, 5);
+        fixedInput(3, 6);
+        fixedInput(4, 8);
+        fixedInput(5, 15);
+        fixedInput(6, 16);*/
+        inputProcess();
+    }
+
+    //creates a new x-y pair, adds it to storage, and increments sample size
+    public static void inputProcess() {
         Storage myData = new Storage();
-        Functions myFunctions = new Functions();
+        System.out.println("Enter x - y value pairs. When finished, enter \"a\" instead of a number.");
         Scanner reader = new Scanner(System.in);
         int n = 0;
 
-        System.out.println("Enter x - y value pairs. When finished, enter a instead of a number.");
-
+        //asks user for input pairs until "a" is entered
         while (true) {
             System.out.println("Enter x" + n);
             String input1 = reader.nextLine();
@@ -24,14 +33,17 @@ public class RegressionCalculator {
             if (input2.equals("a")) {
                 break;
             }
-            Pair xyPair = new Pair(input1, input2);
-            myData.add(xyPair);
+
+            Pair inputPair = new Pair(Integer.parseInt(input1), Integer.parseInt(input2));
+            myData.add(inputPair);
             n++;
         }
-        myData.add(n);
-        
         System.out.println(myData);
-        
-        
+    }
+
+    public static void fixedInput(int x, int y) {
+        Storage myData = new Storage();
+        Pair inputPair = new Pair(x, y);
+        myData.add(inputPair);
     }
 }

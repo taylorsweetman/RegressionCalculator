@@ -4,9 +4,9 @@ public class Pair {
     private final double X;
     private final double Y;
 
-    public Pair(String x, String y) {
-        this.X = Double.parseDouble(x);
-        this.Y = Double.parseDouble(y);
+    public Pair(int x, int y) {
+        this.X = (double)(x);
+        this.Y = (double)(y);
 
     }
 
