@@ -5,45 +5,38 @@ import java.util.Scanner;
 public class RegressionCalculator {
 
     public static void main(String[] args) {
-        /*fixedInput(1, 1);
-        fixedInput(2, 5);
-        fixedInput(3, 6);
-        fixedInput(4, 8);
-        fixedInput(5, 15);
-        fixedInput(6, 16);*/
-        inputProcess();
+        Pair xyPair = new Pair();
+        inputProcess(xyPair);
+        outputProcess(xyPair);
     }
 
-    //creates a new x-y pair, adds it to storage, and increments sample size
-    public static void inputProcess() {
-        Storage myData = new Storage();
+    public static void inputProcess(Pair xyPair) {
         System.out.println("Enter x - y value pairs. When finished, enter \"a\" instead of a number.");
         Scanner reader = new Scanner(System.in);
-        int n = 0;
+        int i = 0;
 
-        //asks user for input pairs until "a" is entered
         while (true) {
-            System.out.println("Enter x" + n);
-            String input1 = reader.nextLine();
-            if (input1.equals("a")) {
+            System.out.println("Enter x" + i);
+            String xInput = reader.nextLine();
+            if (endCheck(xInput)) {
                 break;
             }
-            System.out.println("Enter y" + n);
-            String input2 = reader.nextLine();
-            if (input2.equals("a")) {
+            System.out.println("Enter y" + i++);
+            String yInput = reader.nextLine();
+            if(endCheck(yInput)){
                 break;
             }
-
-            Pair inputPair = new Pair(Integer.parseInt(input1), Integer.parseInt(input2));
-            myData.add(inputPair);
-            n++;
+            
+            xyPair = new Pair (Double.parseDouble(xInput), Double.parseDouble(yInput));
+            xyPair.addToTable();
         }
-        System.out.println(myData);
     }
-
-    public static void fixedInput(int x, int y) {
-        Storage myData = new Storage();
-        Pair inputPair = new Pair(x, y);
-        myData.add(inputPair);
+    
+    public static boolean endCheck(String input){
+        return input.equals("a");
+    }
+    
+    public static void outputProcess(Pair xyPair){
+        System.out.println(xyPair);
     }
 }
