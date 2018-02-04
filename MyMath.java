@@ -2,7 +2,7 @@ package regressioncalculator;
 
 public class MyMath {
 
-    private final Pair xyPairs = new Pair();
+    private final Pair xyPairs;
     private double xBar;
     private double yBar;
     private double xVar; //for each x in X: (x-xBar)^2
@@ -11,8 +11,8 @@ public class MyMath {
     private double beta1;
     private double beta0;
 
-    public MyMath() {
-
+    public MyMath(Pair xyPairs) {
+        this.xyPairs = xyPairs;
     }
 
     public double xBar() {
