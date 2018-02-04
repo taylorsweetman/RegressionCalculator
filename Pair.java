@@ -53,7 +53,7 @@ public class Pair {
     @Override
     public String toString() {
         String str = "";
-        calculator = new MyMath();
+        calculator = new MyMath(this);
         for (Pair entry : table) {
             str += "x" + getN() + "--" + entry.getX() + "\ny" + getN() + "--" + entry.getY() + "\n";
             getN();
