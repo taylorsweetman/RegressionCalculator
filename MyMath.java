@@ -1,8 +1,10 @@
+        
 package regressioncalculator;
+
+import java.util.ArrayList;
 
 public class MyMath {
 
-    private final Pair xyPairs;
     private double xBar;
     private double yBar;
     private double xVar; //for each x in X: (x-xBar)^2
@@ -10,49 +12,52 @@ public class MyMath {
     private double xyCov; //for each x in X and y in Y: (x-xBar)*(y-yBar)
     private double beta1;
     private double beta0;
+    private final ArrayList<Pair> myTable;
+    private int n;
 
-    public MyMath(Pair xyPairs) {
-        this.xyPairs = xyPairs;
+    public MyMath(ArrayList<Pair> pairs) {
+        myTable = pairs;
+        n = myTable.size();
     }
 
     public double xBar() {
         double avg = 0;
-        for (Pair pair : xyPairs.getTable()) {
-            avg += xyPairs.getX();
+        for (Pair pair : myTable) {
+            avg += pair.getX();
         }
-        avg /= xyPairs.getN();
+        avg /= n;
         xBar = avg;
         return xBar;
     }
 
     public double yBar() {
         double avg = 0;
-        for (Pair pair : xyPairs.getTable()) {
+        for (Pair pair : myTable) {
             avg += pair.getY();
         }
-        avg /= xyPairs.getN();
+        avg /= n;
         yBar = avg;
         return yBar;
     }
 
     public double xVar() {
         double var = 0;
-        for (Pair pair : xyPairs.getTable()) {
+        for (Pair pair : myTable) {
             double diff = Math.pow(pair.getX() - xBar(), 2);
             var += diff;
         }
-        var /= (xyPairs.getN() - 1);
+        var /= (n - 1);
         xVar = var;
         return xVar;
     }
 
     public double yVar() {
         double var = 0;
-        for (Pair pair : xyPairs.getTable()) {
+        for (Pair pair : myTable) {
             double diff = Math.pow(pair.getY() - yBar(), 2);
             var += diff;
         }
-        var /= (xyPairs.getN() - 1);
+        var /= (n - 1);
         yVar = var;
         return yVar;
     }
@@ -60,12 +65,12 @@ public class MyMath {
     public double xyCov() {
         double cov = 0;
 
-        for (int i = 0; i < xyPairs.getN(); i++) {
-            double xDiff = xyPairs.getX() - xBar;
-            double yDiff = xyPairs.getY() - yBar;
+        for (int i = 0; i < n; i++) {
+            double xDiff = myTable.get(i).getX() - xBar;
+            double yDiff = myTable.get(i).getY() - yBar;
             cov += xDiff * yDiff;
         }
-        cov /= xyPairs.getN() - 1;
+        cov /= (n - 1);
         xyCov = cov;
         return xyCov;
     }
