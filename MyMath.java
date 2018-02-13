@@ -3,6 +3,8 @@ package regressioncalculator;
 
 import java.util.ArrayList;
 
+//This class contains the math logic required for each statistic utilized in linear regression.
+
 public class MyMath {
 
     private double xBar;
@@ -13,13 +15,13 @@ public class MyMath {
     private double beta1;
     private double beta0;
     private final ArrayList<Pair> myTable;
-    private int n;
+    private final int n;
 
     public MyMath(ArrayList<Pair> pairs) {
         myTable = pairs;
         n = myTable.size();
     }
-
+    
     public double xBar() {
         double avg = 0;
         for (Pair pair : myTable) {
@@ -64,7 +66,6 @@ public class MyMath {
 
     public double xyCov() {
         double cov = 0;
-
         for (int i = 0; i < n; i++) {
             double xDiff = myTable.get(i).getX() - xBar;
             double yDiff = myTable.get(i).getY() - yBar;
@@ -84,5 +85,4 @@ public class MyMath {
         beta0 = yBar() - beta1() * xBar();
         return beta0;
     }
-
 }
