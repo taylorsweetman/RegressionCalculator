@@ -1,26 +1,25 @@
 package calculator.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 public class Pair {
 
     private final double X;
     private final double Y;
-    private final String description;
-    private final double variable;
+    private final int index;
 
     //this constructor is used to create x, y input pairs when reading input from the user
-    public Pair(double x, double y) {
+    public Pair(double x, double y, int index) {
         this.X = x;
         this.Y = y;
-        this.description = "";
-        this.variable = 0;
+        this.index = index;
     }
 
-    //this constructor is used to create descriptive statistics for display to the user -> consider re-factoring this function to a new class
-    public Pair(String desc, double var) {
-        this.description = desc;
-        this.variable = var;
-        this.X = 0;
-        this.Y = 0;
+    @Column(name = "id")
+	@Id
+    public int getIdx() {
+    	return index;
     }
 
     public double getX() {
@@ -29,13 +28,5 @@ public class Pair {
 
     public double getY() {
         return Y;
-    }
-
-    public double getVariable() {
-        return variable;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

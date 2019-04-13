@@ -26,7 +26,7 @@ public class RegressionCalculator {
 				break;
 			}
 
-			System.out.println("Enter y" + variableIndex++);
+			System.out.println("Enter y" + variableIndex);
 			String yInput = reader.nextLine();
 			if (endState(yInput)) {
 				break;
@@ -34,8 +34,9 @@ public class RegressionCalculator {
 
 			// if bad output occurs, it breaks the while loop before reaching this block
 			try {
-				Pair xyPair = new Pair(Double.parseDouble(xInput), Double.parseDouble(yInput));
+				Pair xyPair = new Pair(Double.parseDouble(xInput), Double.parseDouble(yInput), variableIndex);
 				inputTable.add(xyPair);
+				variableIndex++;
 			} catch (Exception ex) {
 				System.out.println("Bad Input");
 			}
