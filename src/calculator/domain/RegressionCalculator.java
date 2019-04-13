@@ -1,7 +1,8 @@
-package regressioncalculator;
+package calculator.domain;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import calculator.logic.MyMath;
 
 public class RegressionCalculator {
 

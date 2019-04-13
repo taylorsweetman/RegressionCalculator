@@ -1,4 +1,4 @@
-package regressioncalculator;
+package calculator.domain;
 
 public class Pair {
 
