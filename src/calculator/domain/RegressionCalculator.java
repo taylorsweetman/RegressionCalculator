@@ -12,36 +12,46 @@ public class RegressionCalculator {
         outputProcess(inputTable, outputTable);
     }
 
+    //need to include error handling in this method
     public static ArrayList<Pair> inputProcess() {
-        System.out.println("Enter x - y value pairs. When finished, enter \"a\" instead of a number.");
+        System.out.println("Enter x - y value pairs. When finished, hit return instead of a number.");
         Scanner reader = new Scanner(System.in);
-        ArrayList<Pair> inputTable = new ArrayList<>();
-        int i = 0;
+        ArrayList<Pair> inputTable = new ArrayList<Pair>();
+        int variableIndex = 0;
 
         while (true) {
-            System.out.println("Enter x" + i);
+            System.out.println("Enter x" + variableIndex);
             String xInput = reader.nextLine();
-            if (endCheck(xInput)) {
+            if (endState(xInput)) {
                 break;
             }
-            System.out.println("Enter y" + i++);
+            
+            System.out.println("Enter y" + variableIndex++);
             String yInput = reader.nextLine();
-            if (endCheck(yInput)) {
+            if (endState(yInput)) {
                 break;
             }
-            Pair xyPair = new Pair(Double.parseDouble(xInput), Double.parseDouble(yInput));
-            inputTable.add(xyPair);
+            
+            //if bad output occurs, it breaks the while loop before reaching this block
+            try {
+            	Pair xyPair = new Pair(Double.parseDouble(xInput), Double.parseDouble(yInput));
+            	inputTable.add(xyPair);
+            } catch(Exception ex) {
+            	System.out.println("Bad Input");
+            }
         }
+        
+        reader.close();
         return inputTable;
     }
 
-    public static boolean endCheck(String input) {
-        return input.equals("a");
+    public static boolean endState(String input) {
+        return input.equals("");
     }
 
     public static ArrayList<Pair> mathProcess(ArrayList<Pair> inputTable) {
         MyMath calculator = new MyMath(inputTable);
-        ArrayList<Pair> outputTable = new ArrayList<>();
+        ArrayList<Pair> outputTable = new ArrayList<Pair>();
 
         double xBar = calculator.xBar();
         Pair outputPair = new Pair("xBar", xBar);
@@ -77,19 +87,18 @@ public class RegressionCalculator {
     public static void outputProcess(ArrayList<Pair> inputTable, ArrayList<Pair> outputTable) {
         String dataStr = "";
         String mathStr = "";
-        int i = 0;
-
+        
+        //creates a string of all the input pairs for display
         for (Pair xyPair : inputTable) {
             dataStr += "(" + xyPair.getX() + ", " + xyPair.getY() + ")\n";
         }
 
+        //creates a string of all the descriptive statistics for display
         for (Pair varPair : outputTable) {
             mathStr += varPair.getDescription() + "   " + varPair.getVariable() + "\n";
         }
         
         System.out.println(dataStr);
         System.out.println(mathStr);
-
     }
-
 }

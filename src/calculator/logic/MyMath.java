@@ -3,87 +3,90 @@ package calculator.logic;
 
 import java.util.ArrayList;
 import calculator.domain.Pair;
-
+ 
 public class MyMath {
 
-    private double xBar;
-    private double yBar;
-    private double xVar; //for each x in X: (x-xBar)^2
-    private double yVar;
-    private double xyCov; //for each x in X and y in Y: (x-xBar)*(y-yBar)
-    private double beta1;
-    private double beta0;
-    private final ArrayList<Pair> myTable;
-    private int n;
+    private final ArrayList<Pair> arrayOfInputPairs; // can this be replaced with a DB???
+    private int n; //number of observation pairs
 
-    public MyMath(ArrayList<Pair> pairs) {
-        myTable = pairs;
-        n = myTable.size();
+    public MyMath(ArrayList<Pair> xyPairs) {
+        arrayOfInputPairs = xyPairs;
+        n = arrayOfInputPairs.size();
     }
 
+    //average x value
     public double xBar() {
         double avg = 0;
-        for (Pair pair : myTable) {
+        
+        for (Pair pair : arrayOfInputPairs) {
             avg += pair.getX();
         }
+        
         avg /= n;
-        xBar = avg;
-        return xBar;
+        return avg;
     }
 
+    //average y value
     public double yBar() {
         double avg = 0;
-        for (Pair pair : myTable) {
+        
+        for (Pair pair : arrayOfInputPairs) {
             avg += pair.getY();
         }
+        
         avg /= n;
-        yBar = avg;
-        return yBar;
+        return avg;
     }
 
+    //variance of X -> for each x in X: (x - xBar)^2
     public double xVar() {
         double var = 0;
-        for (Pair pair : myTable) {
+        
+        for (Pair pair : arrayOfInputPairs) {
             double diff = Math.pow(pair.getX() - xBar(), 2);
             var += diff;
         }
+        
         var /= (n - 1);
-        xVar = var;
-        return xVar;
+        return var;
     }
 
+    //variance of Y -> for each y in Y: (y - yBar)^2
     public double yVar() {
         double var = 0;
-        for (Pair pair : myTable) {
+        
+        for (Pair pair : arrayOfInputPairs) {
             double diff = Math.pow(pair.getY() - yBar(), 2);
             var += diff;
         }
+        
         var /= (n - 1);
-        yVar = var;
-        return yVar;
+        return var;
     }
 
+    //co-variance of X and Y -> for each x in X and y in Y: (x - xBar) * (y - yBar)
     public double xyCov() {
         double cov = 0;
 
         for (int i = 0; i < n; i++) {
-            double xDiff = myTable.get(i).getX() - xBar;
-            double yDiff = myTable.get(i).getY() - yBar;
+            double xDiff = arrayOfInputPairs.get(i).getX() - xBar();
+            double yDiff = arrayOfInputPairs.get(i).getY() - yBar();
             cov += xDiff * yDiff;
         }
+        
         cov /= (n - 1);
-        xyCov = cov;
-        return xyCov;
+        return cov;
     }
 
+    //slope of regression line
     public double beta1() {
-        beta1 = xyCov() / xVar();
+        double beta1 = xyCov() / xVar();
         return beta1;
     }
 
+    //vertical intercept
     public double beta0() {
-        beta0 = yBar() - beta1() * xBar();
+        double beta0 = yBar() - beta1() * xBar();
         return beta0;
     }
-
 }
