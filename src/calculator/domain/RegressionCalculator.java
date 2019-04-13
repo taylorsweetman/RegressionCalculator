@@ -2,103 +2,103 @@ package calculator.domain;
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import calculator.logic.MyMath;
+import calculator.logic.MathLogic;
 
 public class RegressionCalculator {
 
-    public static void main(String[] args) {
-        ArrayList<Pair> inputTable = inputProcess();
-        ArrayList<Pair> outputTable = mathProcess(inputTable);
-        outputProcess(inputTable, outputTable);
-    }
+	public static void main(String[] args) {
+		ArrayList<Pair> listOfInputPairs = inputProcess();
+		ArrayList<OutputStat> listOfStats = mathProcess(listOfInputPairs);
+		outputProcess(listOfInputPairs, listOfStats);
+	}
 
-    //need to include error handling in this method
-    public static ArrayList<Pair> inputProcess() {
-        System.out.println("Enter x - y value pairs. When finished, hit return instead of a number.");
-        Scanner reader = new Scanner(System.in);
-        ArrayList<Pair> inputTable = new ArrayList<Pair>();
-        int variableIndex = 0;
+	// need to include error handling in this method
+	public static ArrayList<Pair> inputProcess() {
+		System.out.println("Enter x - y value pairs. When finished, hit return instead of a number.");
+		Scanner reader = new Scanner(System.in);
+		ArrayList<Pair> inputTable = new ArrayList<Pair>();
+		int variableIndex = 0;
 
-        while (true) {
-            System.out.println("Enter x" + variableIndex);
-            String xInput = reader.nextLine();
-            if (endState(xInput)) {
-                break;
-            }
-            
-            System.out.println("Enter y" + variableIndex++);
-            String yInput = reader.nextLine();
-            if (endState(yInput)) {
-                break;
-            }
-            
-            //if bad output occurs, it breaks the while loop before reaching this block
-            try {
-            	Pair xyPair = new Pair(Double.parseDouble(xInput), Double.parseDouble(yInput));
-            	inputTable.add(xyPair);
-            } catch(Exception ex) {
-            	System.out.println("Bad Input");
-            }
-        }
-        
-        reader.close();
-        return inputTable;
-    }
+		while (true) {
+			System.out.println("Enter x" + variableIndex);
+			String xInput = reader.nextLine();
+			if (endState(xInput)) {
+				break;
+			}
 
-    public static boolean endState(String input) {
-        return input.equals("");
-    }
+			System.out.println("Enter y" + variableIndex++);
+			String yInput = reader.nextLine();
+			if (endState(yInput)) {
+				break;
+			}
 
-    public static ArrayList<Pair> mathProcess(ArrayList<Pair> inputTable) {
-        MyMath calculator = new MyMath(inputTable);
-        ArrayList<Pair> outputTable = new ArrayList<Pair>();
+			// if bad output occurs, it breaks the while loop before reaching this block
+			try {
+				Pair xyPair = new Pair(Double.parseDouble(xInput), Double.parseDouble(yInput));
+				inputTable.add(xyPair);
+			} catch (Exception ex) {
+				System.out.println("Bad Input");
+			}
+		}
 
-        double xBar = calculator.xBar();
-        Pair outputPair = new Pair("xBar", xBar);
-        outputTable.add(outputPair);
-        
-        double yBar = calculator.yBar();
-        outputPair = new Pair("yBar", yBar);
-        outputTable.add(outputPair);
-        
-        double xVar = calculator.xVar();
-        outputPair = new Pair("xVar", xVar);
-        outputTable.add(outputPair);
-        
-        double yVar = calculator.yVar();
-        outputPair = new Pair("yVar", yVar);
-        outputTable.add(outputPair);
-        
-        double xyCov = calculator.xyCov();
-        outputPair = new Pair("xyCov", xyCov);
-        outputTable.add(outputPair);
-        
-        double beta1 = calculator.beta1();
-        outputPair = new Pair("beta1", beta1);
-        outputTable.add(outputPair);
-        
-        double beta0 = calculator.beta0();
-        outputPair = new Pair("beta0", beta0);
-        outputTable.add(outputPair);
-        
-        return outputTable;
-    }
+		reader.close();
+		return inputTable;
+	}
 
-    public static void outputProcess(ArrayList<Pair> inputTable, ArrayList<Pair> outputTable) {
-        String dataStr = "";
-        String mathStr = "";
-        
-        //creates a string of all the input pairs for display
-        for (Pair xyPair : inputTable) {
-            dataStr += "(" + xyPair.getX() + ", " + xyPair.getY() + ")\n";
-        }
+	public static boolean endState(String input) {
+		return input.equals("");
+	}
 
-        //creates a string of all the descriptive statistics for display
-        for (Pair varPair : outputTable) {
-            mathStr += varPair.getDescription() + "   " + varPair.getVariable() + "\n";
-        }
-        
-        System.out.println(dataStr);
-        System.out.println(mathStr);
-    }
+	public static ArrayList<OutputStat> mathProcess(ArrayList<Pair> inputTable) {
+		MathLogic calculator = new MathLogic(inputTable);
+		ArrayList<OutputStat> outputTable = new ArrayList<OutputStat>();
+
+		double xBar = calculator.xBar();
+		OutputStat outputStat = new OutputStat("xBar", xBar);
+		outputTable.add(outputStat);
+
+		double yBar = calculator.yBar();
+		outputStat = new OutputStat("yBar", yBar);
+		outputTable.add(outputStat);
+
+		double xVar = calculator.xVar();
+		outputStat = new OutputStat("xVar", xVar);
+		outputTable.add(outputStat);
+
+		double yVar = calculator.yVar();
+		outputStat = new OutputStat("yVar", yVar);
+		outputTable.add(outputStat);
+
+		double xyCov = calculator.xyCov();
+		outputStat = new OutputStat("xyCov", xyCov);
+		outputTable.add(outputStat);
+
+		double beta1 = calculator.beta1();
+		outputStat = new OutputStat("beta1", beta1);
+		outputTable.add(outputStat);
+
+		double beta0 = calculator.beta0();
+		outputStat = new OutputStat("beta0", beta0);
+		outputTable.add(outputStat);
+
+		return outputTable;
+	}
+
+	public static void outputProcess(ArrayList<Pair> inputPairs, ArrayList<OutputStat> outputStats) {
+		String inputPairsString = "";
+		String outputStatsString = "";
+
+		// creates a string of all the input pairs for display
+		for (Pair xyPair : inputPairs) {
+			inputPairsString += "(" + xyPair.getX() + ", " + xyPair.getY() + ")\n";
+		}
+
+		// creates a string of all the descriptive statistics for display
+		for (OutputStat stat : outputStats) {
+			outputStatsString += stat.getDescription() + "   " + stat.getValue() + "\n";
+		}
+
+		System.out.println(inputPairsString);
+		System.out.println(outputStatsString);
+	}
 }

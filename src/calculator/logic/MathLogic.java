@@ -4,12 +4,12 @@ package calculator.logic;
 import java.util.ArrayList;
 import calculator.domain.Pair;
  
-public class MyMath {
+public class MathLogic {
 
     private final ArrayList<Pair> arrayOfInputPairs; // can this be replaced with a DB???
     private int n; //number of observation pairs
 
-    public MyMath(ArrayList<Pair> xyPairs) {
+    public MathLogic(ArrayList<Pair> xyPairs) {
         arrayOfInputPairs = xyPairs;
         n = arrayOfInputPairs.size();
     }
