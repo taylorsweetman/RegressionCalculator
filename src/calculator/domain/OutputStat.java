@@ -1,21 +1,44 @@
 package calculator.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity(name = "output_table")
 public class OutputStat {
 	
-	private final String description;
-	private final double value;
+	private String description;
+	private double value;
+	private int index;
 	
-	public OutputStat(String desc, double val) {
-		this.description = desc;
-		this.value = val;
+	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getIndex() {
+		return index;
 	}
 	
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
 	
+	@Column(name = "value")
 	public double getValue() {
 		return value;
 	}
-
+	
+	public void setIndex(int input) {
+		this.index = input;
+	}
+	
+	public void setDescription(String input) {
+		this.description = input;
+	}
+	
+	public void setValue(double input) {
+		this.value = input;
+	}
 }

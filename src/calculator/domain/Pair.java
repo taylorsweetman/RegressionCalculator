@@ -12,7 +12,6 @@ public class Pair {
     private double X;
     private double Y;
     private int index;
-    private int runId;
 
     @Column(name = "id")
 	@Id
@@ -31,11 +30,6 @@ public class Pair {
         return Y;
     }
     
-    @Column(name = "run_id")
-    public int getRunId() {
-    	return runId;
-    }
-    
     public void setX(double x) {
     	this.X = x;
     }
@@ -46,9 +40,5 @@ public class Pair {
     
     public void setIdx(int idx) {
     	this.index = idx;
-    }
-    
-    public void setRunId(int id) {
-    	this.runId = id;
     }
 }

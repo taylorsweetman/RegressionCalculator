@@ -12,7 +12,6 @@ public class CalculatorProcesses {
 	private ArrayList<Pair> inputTable;
 	private ArrayList<OutputStat> outputTable;
 	private MathLogic calculator;
-	private int runNumber;
 	private DBConnection db;
 	
 	
@@ -21,9 +20,6 @@ public class CalculatorProcesses {
 		inputTable = new ArrayList<Pair>();
 		outputTable = new ArrayList<OutputStat>();
 		db = new DBConnection();
-		
-		
-		//"SELECT * FROM input_table ORDER BY run_id DESC LIMIT 1");
 	}
 	
 
@@ -50,7 +46,6 @@ public class CalculatorProcesses {
 				Pair xyPair = new Pair();
 				xyPair.setX(Double.parseDouble(xInput));
 				xyPair.setY(Double.parseDouble(yInput));
-				xyPair.setRunId(runNumber);
 				inputTable.add(xyPair);
 				
 				//persist to DB
@@ -64,7 +59,6 @@ public class CalculatorProcesses {
 		}
 
 		reader.close();
-		db.close();
 		return inputTable;
 	}
 
@@ -76,14 +70,20 @@ public class CalculatorProcesses {
 		calculator = new MathLogic(inputTable);
 
 		double xBar = calculator.xBar();
-		OutputStat outputStat = new OutputStat("xBar", xBar);
+		OutputStat outputStat = new OutputStat();
+		outputStat.setDescription("xBar");
+		outputStat.setValue(xBar);
+		db.persistStats(outputStat);
 		outputTable.add(outputStat);
 
 		double yBar = calculator.yBar();
-		outputStat = new OutputStat("yBar", yBar);
+		outputStat = new OutputStat();
+		outputStat.setDescription("yBar");
+		outputStat.setValue(yBar);
+		db.persistStats(outputStat);
 		outputTable.add(outputStat);
 
-		double xVar = calculator.xVar();
+		/*double xVar = calculator.xVar();
 		outputStat = new OutputStat("xVar", xVar);
 		outputTable.add(outputStat);
 
@@ -101,8 +101,9 @@ public class CalculatorProcesses {
 
 		double beta0 = calculator.beta0();
 		outputStat = new OutputStat("beta0", beta0);
-		outputTable.add(outputStat);
+		outputTable.add(outputStat);*/
 
+		db.close();
 		return outputTable;
 	}
 

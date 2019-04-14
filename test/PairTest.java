@@ -11,7 +11,6 @@ public class PairTest {
 		pair1.setX(1.0);
 		pair1.setY(1.0);
 		pair1.setIdx(1);
-		pair1.setRunId(1);
 
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("Regression Calculator");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
