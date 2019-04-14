@@ -7,9 +7,10 @@ import javax.persistence.Id;
 @Entity(name = "input_table")
 public class Pair {
 
-    private final double X;
-    private final double Y;
-    private final int index;
+    private double X;
+    private double Y;
+    private int index;
+    private int runId;
 
     //this constructor is used to create x, y input pairs when reading input from the user
    
@@ -30,7 +31,24 @@ public class Pair {
         return Y;
     }
     
+    @Column(name = "run_id")
+    public int getRunId() {
+    	return runId;
+    }
+    
     public void setX(double x) {
     	this.X = x;
+    }
+    
+    public void setY(double y) {
+    	this.Y = y;
+    }
+    
+    public void setIdx(int idx) {
+    	this.index = idx;
+    }
+    
+    public void setRunId(int id) {
+    	this.runId = id;
     }
 }
