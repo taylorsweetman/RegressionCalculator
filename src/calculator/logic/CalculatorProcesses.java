@@ -1,23 +1,30 @@
-package calculator.domain;
+package calculator.logic;
 
-import java.util.Scanner;
 import java.util.ArrayList;
-import calculator.logic.MathLogic;
+import java.util.Scanner;
+import calculator.domain.OutputStat;
+import calculator.domain.Pair;
 
-public class RegressionCalculator {
-
-	public static void main(String[] args) {
-		ArrayList<Pair> listOfInputPairs = inputProcess();
-		ArrayList<OutputStat> listOfStats = mathProcess(listOfInputPairs);
-		outputProcess(listOfInputPairs, listOfStats);
+public class CalculatorProcesses {
+	
+	private Scanner reader;
+	private ArrayList<Pair> inputTable;
+	private ArrayList<OutputStat> outputTable;
+	private MathLogic calculator;
+	private int runNumber = 0;
+	
+	public CalculatorProcesses() {
+		reader = new Scanner(System.in);
+		inputTable = new ArrayList<Pair>();
+		outputTable = new ArrayList<OutputStat>();
 	}
+	
 
 	// need to include error handling in this method
-	public static ArrayList<Pair> inputProcess() {
+	public ArrayList<Pair> inputProcess() {
 		System.out.println("Enter x - y value pairs. When finished, hit return instead of a number.");
-		Scanner reader = new Scanner(System.in);
-		ArrayList<Pair> inputTable = new ArrayList<Pair>();
 		int variableIndex = 0;
+		runNumber++;
 
 		while (true) {
 			System.out.println("Enter x" + variableIndex);
@@ -34,7 +41,11 @@ public class RegressionCalculator {
 
 			// if bad output occurs, it breaks the while loop before reaching this block
 			try {
-				Pair xyPair = new Pair(Double.parseDouble(xInput), Double.parseDouble(yInput), variableIndex);
+				Pair xyPair = new Pair();
+				xyPair.setX(Double.parseDouble(xInput));
+				xyPair.setY(Double.parseDouble(yInput));
+				xyPair.setIdx(variableIndex);
+				xyPair.setRunId(runNumber);
 				inputTable.add(xyPair);
 				variableIndex++;
 			} catch (Exception ex) {
@@ -46,13 +57,12 @@ public class RegressionCalculator {
 		return inputTable;
 	}
 
-	public static boolean endState(String input) {
+	public boolean endState(String input) {
 		return input.equals("");
 	}
 
-	public static ArrayList<OutputStat> mathProcess(ArrayList<Pair> inputTable) {
-		MathLogic calculator = new MathLogic(inputTable);
-		ArrayList<OutputStat> outputTable = new ArrayList<OutputStat>();
+	public ArrayList<OutputStat> mathProcess(ArrayList<Pair> inputTable) {
+		calculator = new MathLogic(inputTable);
 
 		double xBar = calculator.xBar();
 		OutputStat outputStat = new OutputStat("xBar", xBar);
@@ -85,7 +95,7 @@ public class RegressionCalculator {
 		return outputTable;
 	}
 
-	public static void outputProcess(ArrayList<Pair> inputPairs, ArrayList<OutputStat> outputStats) {
+	public void outputProcess(ArrayList<Pair> inputPairs, ArrayList<OutputStat> outputStats) {
 		String inputPairsString = "";
 		String outputStatsString = "";
 
@@ -102,4 +112,5 @@ public class RegressionCalculator {
 		System.out.println(inputPairsString);
 		System.out.println(outputStatsString);
 	}
+
 }
