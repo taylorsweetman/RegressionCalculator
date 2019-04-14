@@ -2,6 +2,8 @@ package calculator.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "input_table")
@@ -12,11 +14,9 @@ public class Pair {
     private int index;
     private int runId;
 
-    //this constructor is used to create x, y input pairs when reading input from the user
-   
-
     @Column(name = "id")
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getIdx() {
     	return index;
     }

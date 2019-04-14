@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import calculator.domain.OutputStat;
 import calculator.domain.Pair;
+import database.DBConnection;
 
 public class CalculatorProcesses {
 	
@@ -11,12 +12,18 @@ public class CalculatorProcesses {
 	private ArrayList<Pair> inputTable;
 	private ArrayList<OutputStat> outputTable;
 	private MathLogic calculator;
-	private int runNumber = 0;
+	private int runNumber;
+	private DBConnection db;
+	
 	
 	public CalculatorProcesses() {
 		reader = new Scanner(System.in);
 		inputTable = new ArrayList<Pair>();
 		outputTable = new ArrayList<OutputStat>();
+		db = new DBConnection();
+		
+		
+		//"SELECT * FROM input_table ORDER BY run_id DESC LIMIT 1");
 	}
 	
 
@@ -24,7 +31,6 @@ public class CalculatorProcesses {
 	public ArrayList<Pair> inputProcess() {
 		System.out.println("Enter x - y value pairs. When finished, hit return instead of a number.");
 		int variableIndex = 0;
-		runNumber++;
 
 		while (true) {
 			System.out.println("Enter x" + variableIndex);
@@ -44,9 +50,13 @@ public class CalculatorProcesses {
 				Pair xyPair = new Pair();
 				xyPair.setX(Double.parseDouble(xInput));
 				xyPair.setY(Double.parseDouble(yInput));
-				xyPair.setIdx(variableIndex);
 				xyPair.setRunId(runNumber);
 				inputTable.add(xyPair);
+				
+				//persist to DB
+				db.persistPair(xyPair);
+				
+				//increment variableIndex
 				variableIndex++;
 			} catch (Exception ex) {
 				System.out.println("Bad Input");
@@ -54,6 +64,7 @@ public class CalculatorProcesses {
 		}
 
 		reader.close();
+		db.close();
 		return inputTable;
 	}
 
