@@ -2,8 +2,6 @@ package calculator.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "input_table")
@@ -15,7 +13,6 @@ public class Pair {
 
     @Column(name = "id")
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getIdx() {
     	return index;
     }

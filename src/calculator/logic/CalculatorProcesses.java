@@ -9,10 +9,13 @@ import database.DBConnection;
 public class CalculatorProcesses {
 	
 	private Scanner reader;
+	//eliminate these tables
 	private ArrayList<Pair> inputTable;
 	private ArrayList<OutputStat> outputTable;
+	//
 	private MathLogic calculator;
 	private DBConnection db;
+	private int index;
 	
 	
 	public CalculatorProcesses() {
@@ -20,13 +23,14 @@ public class CalculatorProcesses {
 		inputTable = new ArrayList<Pair>();
 		outputTable = new ArrayList<OutputStat>();
 		db = new DBConnection();
+		index = 1;
 	}
 	
 
 	// need to include error handling in this method
 	public ArrayList<Pair> inputProcess() {
 		System.out.println("Enter x - y value pairs. When finished, hit return instead of a number.");
-		int variableIndex = 0;
+		int variableIndex = 1;
 
 		while (true) {
 			System.out.println("Enter x" + variableIndex);
@@ -46,6 +50,7 @@ public class CalculatorProcesses {
 				Pair xyPair = new Pair();
 				xyPair.setX(Double.parseDouble(xInput));
 				xyPair.setY(Double.parseDouble(yInput));
+				xyPair.setIdx(variableIndex);
 				inputTable.add(xyPair);
 				
 				//persist to DB
@@ -67,44 +72,43 @@ public class CalculatorProcesses {
 	}
 
 	public ArrayList<OutputStat> mathProcess(ArrayList<Pair> inputTable) {
+		
 		calculator = new MathLogic(inputTable);
 
 		double xBar = calculator.xBar();
-		OutputStat outputStat = new OutputStat();
-		outputStat.setDescription("xBar");
-		outputStat.setValue(xBar);
-		db.persistStats(outputStat);
-		outputTable.add(outputStat);
+		addStatistic("xBar", xBar);
 
 		double yBar = calculator.yBar();
-		outputStat = new OutputStat();
-		outputStat.setDescription("yBar");
-		outputStat.setValue(yBar);
-		db.persistStats(outputStat);
-		outputTable.add(outputStat);
+		addStatistic("yBar", yBar);
 
-		/*double xVar = calculator.xVar();
-		outputStat = new OutputStat("xVar", xVar);
-		outputTable.add(outputStat);
+		double xVar = calculator.xVar();
+		addStatistic("xVar", xVar);
 
 		double yVar = calculator.yVar();
-		outputStat = new OutputStat("yVar", yVar);
-		outputTable.add(outputStat);
+		addStatistic("yVar", yVar);
 
 		double xyCov = calculator.xyCov();
-		outputStat = new OutputStat("xyCov", xyCov);
-		outputTable.add(outputStat);
+		addStatistic("xyCov", xyCov);
 
 		double beta1 = calculator.beta1();
-		outputStat = new OutputStat("beta1", beta1);
-		outputTable.add(outputStat);
+		addStatistic("beta1", beta1);
 
 		double beta0 = calculator.beta0();
-		outputStat = new OutputStat("beta0", beta0);
-		outputTable.add(outputStat);*/
+		addStatistic("beta0", beta0);
 
 		db.close();
 		return outputTable;
+	}
+	
+	public void addStatistic(String name, double value) {
+		OutputStat outputStat = new OutputStat();
+		outputStat.setDescription(name);
+		outputStat.setValue(value);
+		outputStat.setIndex(index);
+		db.persistStats(outputStat);
+		//do away with these tables
+		outputTable.add(outputStat);
+		index++;
 	}
 
 	public void outputProcess(ArrayList<Pair> inputPairs, ArrayList<OutputStat> outputStats) {
