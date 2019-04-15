@@ -2,6 +2,8 @@ package calculator.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "input_table")
@@ -13,7 +15,8 @@ public class Pair {
 
     @Column(name = "id")
 	@Id
-    public int getIdx() {
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getIndex() {
     	return index;
     }
 
@@ -27,15 +30,15 @@ public class Pair {
         return Y;
     }
     
+    public void setIndex(int input) {
+    	this.index = input;
+    }
+    
     public void setX(double x) {
     	this.X = x;
     }
     
     public void setY(double y) {
     	this.Y = y;
-    }
-    
-    public void setIdx(int idx) {
-    	this.index = idx;
     }
 }

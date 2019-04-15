@@ -15,7 +15,6 @@ public class CalculatorProcesses {
 	//
 	private MathLogic calculator;
 	private DBConnection db;
-	private int index;
 	
 	
 	public CalculatorProcesses() {
@@ -23,7 +22,6 @@ public class CalculatorProcesses {
 		inputTable = new ArrayList<Pair>();
 		outputTable = new ArrayList<OutputStat>();
 		db = new DBConnection();
-		index = 1;
 	}
 	
 
@@ -50,7 +48,6 @@ public class CalculatorProcesses {
 				Pair xyPair = new Pair();
 				xyPair.setX(Double.parseDouble(xInput));
 				xyPair.setY(Double.parseDouble(yInput));
-				xyPair.setIdx(variableIndex);
 				inputTable.add(xyPair);
 				
 				//persist to DB
@@ -104,11 +101,9 @@ public class CalculatorProcesses {
 		OutputStat outputStat = new OutputStat();
 		outputStat.setDescription(name);
 		outputStat.setValue(value);
-		outputStat.setIndex(index);
 		db.persistStats(outputStat);
 		//do away with these tables
 		outputTable.add(outputStat);
-		index++;
 	}
 
 	public void outputProcess(ArrayList<Pair> inputPairs, ArrayList<OutputStat> outputStats) {
