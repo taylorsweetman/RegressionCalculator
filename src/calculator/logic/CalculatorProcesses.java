@@ -7,69 +7,89 @@ import calculator.domain.Pair;
 import database.DBConnection;
 
 public class CalculatorProcesses {
-	
+
 	private Scanner reader;
-	//eliminate these tables
 	private ArrayList<Pair> inputTable;
 	private ArrayList<OutputStat> outputTable;
-	//
 	private MathLogic calculator;
 	private DBConnection db;
-	
-	
+
 	public CalculatorProcesses() {
 		reader = new Scanner(System.in);
 		inputTable = new ArrayList<Pair>();
 		outputTable = new ArrayList<OutputStat>();
 		db = new DBConnection();
 	}
-	
 
-	// need to include error handling in this method
 	public ArrayList<Pair> inputProcess() {
-		System.out.println("Enter x - y value pairs. When finished, hit return instead of a number.");
-		int variableIndex = 1;
+		System.out.println("Enter x - y variable pairs. When finished, hit return instead of an x variable.");
+		int variableIndex = 0;
 
+		// continuously asks the user for input until the user hits return in lieu of a
+		// variable
 		while (true) {
 			System.out.println("Enter x" + variableIndex);
-			String xInput = reader.nextLine();
-			if (endState(xInput)) {
+
+			// translates user input to a double type; returns -9999 in the case the user
+			// wishes to exit process
+			double xValue = readInputFromUser();
+			if (xValue == -9999) {
 				break;
 			}
 
 			System.out.println("Enter y" + variableIndex);
-			String yInput = reader.nextLine();
-			if (endState(yInput)) {
-				break;
+			double yValue = readInputFromUser();
+			// if the user wishes to exit before giving the final y value, this loop will
+			// force them to enter one
+			while (yValue == -9999) {
+				System.out.println("Cannot exit program since each x variable must have a "
+						+ "corresponding y value. Please enter the corresponding y value, then exit the program.");
+				yValue = readInputFromUser();
 			}
 
-			// if bad output occurs, it breaks the while loop before reaching this block
-			try {
-				Pair xyPair = new Pair();
-				xyPair.setX(Double.parseDouble(xInput));
-				xyPair.setY(Double.parseDouble(yInput));
-				inputTable.add(xyPair);
-				
-				//persist to DB
-				db.persistPair(xyPair);
-				
-				//increment variableIndex
-				variableIndex++;
-			} catch (Exception ex) {
-				System.out.println("Bad Input");
-			}
+			// creates xyPair and inputs user's variables for each
+			Pair xyPair = new Pair();
+			xyPair.setX(xValue);
+			xyPair.setY(yValue);
+			inputTable.add(xyPair);
+
+			// persist to DB
+			db.persistPair(xyPair);
+
+			// increment variableIndex
+			variableIndex++;
 		}
 
 		reader.close();
 		return inputTable;
 	}
 
-	public boolean endState(String input) {
-		return input.equals("");
+	public double readInputFromUser() {
+		String stringInput;
+		double inputValue;
+
+		while (true) {
+			try {
+				stringInput = reader.nextLine();
+				// if user hits return w/o a number, return -9999 to indicate they wish to end
+				// process
+				if (stringInput.equals("")) {
+					return -9999;
+				}
+				inputValue = Double.parseDouble(stringInput);
+				
+			} catch (NumberFormatException badInput) {
+				System.out.println("The input must be a number, please try again.");
+				continue;
+			}
+			return inputValue;
+		}
 	}
 
+	/*uses the logic from MathLogic to calculate the needed statistics from the user input pairs
+	adds these needed statistics to an ArrayList for later display
+	also persists output stats to database via addStatistic method*/
 	public ArrayList<OutputStat> mathProcess(ArrayList<Pair> inputTable) {
-		
 		calculator = new MathLogic(inputTable);
 
 		double xBar = calculator.xBar();
@@ -96,19 +116,19 @@ public class CalculatorProcesses {
 		db.close();
 		return outputTable;
 	}
-	
+
+	//adds OutputStat objects to outputTable and persists them to the DB
 	public void addStatistic(String name, double value) {
 		OutputStat outputStat = new OutputStat();
 		outputStat.setDescription(name);
 		outputStat.setValue(value);
 		db.persistStats(outputStat);
-		//do away with these tables
 		outputTable.add(outputStat);
 	}
 
 	public void outputProcess(ArrayList<Pair> inputPairs, ArrayList<OutputStat> outputStats) {
-		String inputPairsString = "";
-		String outputStatsString = "";
+		String inputPairsString = "---Input x, y pairs---\n";
+		String outputStatsString = "---Statistics---\n";
 
 		// creates a string of all the input pairs for display
 		for (Pair xyPair : inputPairs) {
@@ -123,5 +143,4 @@ public class CalculatorProcesses {
 		System.out.println(inputPairsString);
 		System.out.println(outputStatsString);
 	}
-
 }
