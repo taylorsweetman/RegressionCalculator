@@ -6,7 +6,7 @@ import calculator.domain.Pair;
  
 public class MathLogic {
 
-    private final ArrayList<Pair> arrayOfInputPairs; // can this be replaced with a DB???
+    private final ArrayList<Pair> arrayOfInputPairs; 
     private int n; //number of observation pairs
 
     public MathLogic(ArrayList<Pair> xyPairs) {
@@ -43,8 +43,8 @@ public class MathLogic {
         double var = 0;
         
         for (Pair pair : arrayOfInputPairs) {
-            double diff = Math.pow(pair.getX() - xBar(), 2);
-            var += diff;
+            double squaredDifference = Math.pow(pair.getX() - xBar(), 2);
+            var += squaredDifference;
         }
         
         var /= (n - 1);
@@ -56,8 +56,8 @@ public class MathLogic {
         double var = 0;
         
         for (Pair pair : arrayOfInputPairs) {
-            double diff = Math.pow(pair.getY() - yBar(), 2);
-            var += diff;
+            double squaredDifference = Math.pow(pair.getY() - yBar(), 2);
+            var += squaredDifference;
         }
         
         var /= (n - 1);
@@ -68,10 +68,10 @@ public class MathLogic {
     public double xyCov() {
         double cov = 0;
 
-        for (int i = 0; i < n; i++) {
-            double xDiff = arrayOfInputPairs.get(i).getX() - xBar();
-            double yDiff = arrayOfInputPairs.get(i).getY() - yBar();
-            cov += xDiff * yDiff;
+        for(Pair pair : arrayOfInputPairs) {
+        	double xDifference = pair.getX() - xBar();
+        	double yDifference = pair.getY() - yBar();
+        	cov += xDifference * yDifference;
         }
         
         cov /= (n - 1);
@@ -80,13 +80,11 @@ public class MathLogic {
 
     //slope of regression line
     public double beta1() {
-        double beta1 = xyCov() / xVar();
-        return beta1;
+        return xyCov() / xVar();
     }
 
     //vertical intercept
     public double beta0() {
-        double beta0 = yBar() - beta1() * xBar();
-        return beta0;
+        return yBar() - beta1() * xBar();
     }
 }
