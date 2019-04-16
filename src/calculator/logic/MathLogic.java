@@ -87,4 +87,38 @@ public class MathLogic {
     public double beta0() {
         return yBar() - beta1() * xBar();
     }
+    
+    //y value predicted by regression model
+    public double yHat(double xValue) {
+    	return beta0() + beta1() * xValue;
+    }
+    
+    //total sum of squares
+    public double SSTO() {
+    	double ssto = 0;
+        
+        for (Pair pair : arrayOfInputPairs) {
+            double squaredDifference = Math.pow(pair.getY() - yBar(), 2);
+            ssto += squaredDifference;
+        }
+        
+        return ssto;
+    }
+    
+    //sum of squares explained by model (regression sum of squares)
+    public double SSR() {
+    	double ssr = 0;
+    	
+    	for (Pair pair : arrayOfInputPairs) {
+    		double squaredDifference = Math.pow(yHat(pair.getX()) - yBar(), 2);
+    		ssr += squaredDifference;
+    	}
+    	
+    	return ssr;
+    }
+    
+    //co-efficient of determination (goodness of fit)
+    public double rSquared() {
+    	return SSR()/SSTO();
+    }
 }

@@ -112,6 +112,9 @@ public class CalculatorProcesses {
 
 		double beta0 = calculator.beta0();
 		addStatistic("beta0", beta0);
+		
+		double rSquared = calculator.rSquared();
+		addStatistic("rSquared", rSquared);
 
 		db.close();
 		return outputTable;
