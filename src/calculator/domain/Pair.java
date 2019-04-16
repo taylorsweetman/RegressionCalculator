@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+//defines data structure of x, y pairs
 @Entity(name = "input_table")
 public class Pair {
 

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+//defines data structure of output statistics in the form of ("description", value)
 @Entity(name = "output_table")
 public class OutputStat {
 	
